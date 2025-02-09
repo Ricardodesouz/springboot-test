@@ -1,5 +1,6 @@
 package com.ricardo.estudospringboot.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -20,6 +21,7 @@ public class User {
     private String name;
     private String email;
     private String password;
+    @JsonIgnore
     @OneToMany(mappedBy  = "client")
     private List<Order> orders = new ArrayList<>();
 
