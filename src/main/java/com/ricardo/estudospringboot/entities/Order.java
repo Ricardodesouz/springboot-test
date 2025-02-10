@@ -1,5 +1,6 @@
 package com.ricardo.estudospringboot.entities;
 
+import com.ricardo.estudospringboot.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -11,18 +12,23 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column
     private Instant moment;
+
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
 
+    private Integer orderStatus;
+
     public Order(){}
 
-    public Order(Integer id, Instant moment, User client) {
+    public Order(Integer id, Instant moment, User client, OrderStatus orderStatus) {
         this.id = id;
         this.moment = moment;
         this.client = client;
+        setOrderSatus(orderStatus);
     }
 
     public Integer getId() {
@@ -47,6 +53,15 @@ public class Order {
 
     public void setClient(User client) {
         this.client = client;
+    }
+    public OrderStatus getOrderStatus(){
+        return OrderStatus.valueOf(orderStatus);
+    }
+
+    public void setOrderSatus(OrderStatus orderSatus){
+        if(orderSatus != null) {
+            this.orderStatus = orderSatus.getCode();
+        }
     }
 
     @Override
