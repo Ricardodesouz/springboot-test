@@ -1,5 +1,9 @@
 package com.ricardo.estudospringboot.entities.enums;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+
 public enum OrderStatus {
     WAITING_PAYMENT(1),
     PAID(2),

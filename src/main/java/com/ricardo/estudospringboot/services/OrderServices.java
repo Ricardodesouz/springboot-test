@@ -1,7 +1,7 @@
 package com.ricardo.estudospringboot.services;
 
 import com.ricardo.estudospringboot.entities.Order;
-import com.ricardo.estudospringboot.repositories.OrderRespository;
+import com.ricardo.estudospringboot.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +11,13 @@ import java.util.Optional;
 @Service
 public class OrderServices {
     @Autowired
-    private OrderRespository orderRespository;
+    private OrderRepository orderRepository;
 
     public List<Order> findAll(){
-        return orderRespository.findAll();
+        return orderRepository.findAll();
     }
     public Order findById(Integer id ){
-        Optional<Order> obj = orderRespository.findById(id);
+        Optional<Order> obj = orderRepository.findById(id);
         return obj.get();
     }
 }
