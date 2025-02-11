@@ -12,6 +12,8 @@ import java.util.List;
 
 
 import java.util.Objects;
+import java.util.Set;
+
 @Entity
 @Table(name="tb_user")
 public class User {
@@ -21,9 +23,11 @@ public class User {
     private String name;
     private String email;
     private String password;
+
     @JsonIgnore
     @OneToMany(mappedBy  = "client")
     private List<Order> orders = new ArrayList<>();
+
 
 
 
