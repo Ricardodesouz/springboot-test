@@ -13,21 +13,25 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String  name;
+    private String  description;
     private Double price;
     private String ImgUrl;
 
-    @Transient
+    @ManyToMany
+    @JoinTable(name ="tb_ product_category" , joinColumns = @JoinColumn (name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
 
 
     public Product(){};
 
-    public Product(Integer id, String name, Double price, String imgUrl) {
+    public Product(Integer id, String name,String description, Double price, String imgUrl) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.price = price;
-        ImgUrl = imgUrl;
+        this.ImgUrl = imgUrl;
     }
 
     public Integer getId() {
@@ -56,6 +60,14 @@ public class Product {
 
     public String getImgUrl() {
         return ImgUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setImgUrl(String imgUrl) {

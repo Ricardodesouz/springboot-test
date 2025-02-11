@@ -1,5 +1,6 @@
 package com.ricardo.estudospringboot.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -16,7 +17,8 @@ public class Category {
 
     private String name;
 
-    @Transient
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
     private Set<Product> products = new HashSet<>();
 
     public Category(){};
@@ -41,6 +43,11 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
 
     @Override
     public boolean equals(Object o) {
