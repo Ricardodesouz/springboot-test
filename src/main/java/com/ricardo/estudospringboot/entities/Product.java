@@ -18,7 +18,7 @@ public class Product {
     private String ImgUrl;
 
     @ManyToMany
-    @JoinTable(name ="tb_ product_category" , joinColumns = @JoinColumn (name = "product_id"),
+    @JoinTable(name ="TB_PRODUCT_CATEGORY" , joinColumns = @JoinColumn (name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 

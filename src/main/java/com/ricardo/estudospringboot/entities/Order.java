@@ -4,7 +4,9 @@ import com.ricardo.estudospringboot.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "TB_ORDER")
@@ -21,6 +23,9 @@ public class Order {
     private User client;
 
     private Integer orderStatus;
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Order(){}
 
@@ -58,10 +63,15 @@ public class Order {
         return OrderStatus.valueOf(orderStatus);
     }
 
+    public Set<OrderItem> getItems() {
+        return items;
+    }
+
     public void setOrderSatus(OrderStatus orderSatus){
         if(orderSatus != null) {
             this.orderStatus = orderSatus.getCode();
         }
+
     }
 
     @Override

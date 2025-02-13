@@ -1,14 +1,8 @@
 package com.ricardo.estudospringboot.config;
 
-import com.ricardo.estudospringboot.entities.Order;
-import com.ricardo.estudospringboot.entities.Product;
-import com.ricardo.estudospringboot.entities.User;
-import com.ricardo.estudospringboot.entities.Category;
+import com.ricardo.estudospringboot.entities.*;
 import com.ricardo.estudospringboot.entities.enums.OrderStatus;
-import com.ricardo.estudospringboot.repositories.CategoryRepository;
-import com.ricardo.estudospringboot.repositories.OrderRepository;
-import com.ricardo.estudospringboot.repositories.ProductRepository;
-import com.ricardo.estudospringboot.repositories.UserRepository;
+import com.ricardo.estudospringboot.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +22,9 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
 
 
@@ -64,6 +60,14 @@ public class TestConfig implements CommandLineRunner {
         Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), u2,OrderStatus.PAID);
         Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), u1, OrderStatus.CANCELED);
         orderRepository.saveAll(Arrays.asList(o1,o2,o3));
+
+        OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+        OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+        OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+        OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+
+        orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3, oi4));
+
 
 
 
