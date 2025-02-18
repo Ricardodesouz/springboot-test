@@ -4,10 +4,7 @@ import com.ricardo.estudospringboot.services.UserServices;
 import com.ricardo.estudospringboot.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +23,9 @@ public class UserResources {
     @GetMapping(value = "/{id}")
     public ResponseEntity<User> findById(@PathVariable Integer id){
         return ResponseEntity.ok().body(userServices.findById(id));
+    }
+    @PostMapping
+    public ResponseEntity<User> Insert(@RequestBody User user){
+        return ResponseEntity.ok().body(userServices.insert(user));
     }
 }
