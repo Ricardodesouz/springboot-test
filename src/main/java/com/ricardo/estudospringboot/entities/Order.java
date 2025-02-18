@@ -15,7 +15,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(name  = "date")
     private Instant moment;
 
     @ManyToOne
@@ -86,6 +86,14 @@ public class Order {
 
     }
 
+    public Double getTotal(){
+        Double sum  = 0.0;
+        for(OrderItem x : items){
+            sum += x.getSubTotal();
+        }
+        return sum;
+
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

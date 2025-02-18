@@ -14,6 +14,7 @@ public class Payment {
     private Instant momement;
     @OneToOne
     @MapsId
+    @JsonIgnore
     private Order order;
 
     public Payment(){};
