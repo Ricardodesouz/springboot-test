@@ -3,9 +3,12 @@ package com.ricardo.estudospringboot.resources;
 import com.ricardo.estudospringboot.services.UserServices;
 import com.ricardo.estudospringboot.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -26,6 +29,9 @@ public class UserResources {
     }
     @PostMapping
     public ResponseEntity<User> Insert(@RequestBody User user){
-        return ResponseEntity.ok().body(userServices.insert(user));
+        user = userServices.insert(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(user);
     }
 }
