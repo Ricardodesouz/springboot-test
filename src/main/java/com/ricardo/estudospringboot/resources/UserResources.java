@@ -2,6 +2,7 @@ package com.ricardo.estudospringboot.resources;
 
 import com.ricardo.estudospringboot.services.UserServices;
 import com.ricardo.estudospringboot.entities.User;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +34,13 @@ public class UserResources {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(user);
+    }
+    @DeleteMapping(value = {"/{id}"})
+     public ResponseEntity<Void> deleteById(@PathVariable Integer id){
+        return ResponseEntity.noContent().build();
+    }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<User> update(@PathVariable Integer id, @RequestBody User user){
+        return ResponseEntity.ok().body(userServices.update(id,user));
     }
 }
