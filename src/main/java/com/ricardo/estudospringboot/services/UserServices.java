@@ -1,6 +1,7 @@
 package com.ricardo.estudospringboot.services;
 
 import com.ricardo.estudospringboot.repositories.UserRepository;
+import com.ricardo.estudospringboot.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ricardo.estudospringboot.entities.User;
@@ -19,7 +20,7 @@ public class UserServices {
     }
     public User findById(Integer id){
         Optional<User> user = userRepository.findById(id);
-        return user.get();
+        return user.orElseThrow(() -> new ResourceNotFoundException(id));
 
     }
     public User insert (User user){
