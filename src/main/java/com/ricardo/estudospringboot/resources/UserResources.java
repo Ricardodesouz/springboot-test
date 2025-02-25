@@ -37,6 +37,7 @@ public class UserResources {
     }
     @DeleteMapping(value = {"/{id}"})
      public ResponseEntity<Void> deleteById(@PathVariable Integer id){
+        userServices.delete(id);
         return ResponseEntity.noContent().build();
     }
     @PutMapping(value = "/{id}")

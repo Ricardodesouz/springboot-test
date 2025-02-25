@@ -1,6 +1,7 @@
 package com.ricardo.estudospringboot.resources.exceptions;
 
 
+import com.ricardo.estudospringboot.services.exceptions.DataBaseException;
 import com.ricardo.estudospringboot.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,13 @@ public class RersourceExceptionHandler {
         StandardError standardError = new StandardError(Instant.now(),status.value(),
                 error, err.getMessage(),request.getRequestURI());
         return ResponseEntity.status(status).body(standardError);
-
-
     }
+    @ExceptionHandler(DataBaseException.class)
+    public ResponseEntity<StandardError> dataBaseException(DataBaseException err, HttpServletRequest request){
+        String error = " Data base Integrity Violation exception";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError standardError = new StandardError(Instant.now(), status.value(), error, err.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(standardError);
+    }
+
 }

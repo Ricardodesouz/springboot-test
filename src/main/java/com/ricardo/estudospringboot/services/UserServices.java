@@ -1,12 +1,14 @@
 package com.ricardo.estudospringboot.services;
 
 import com.ricardo.estudospringboot.repositories.UserRepository;
+import com.ricardo.estudospringboot.services.exceptions.DataBaseException;
 import com.ricardo.estudospringboot.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.ricardo.estudospringboot.entities.User;
 
-import javax.swing.text.html.parser.Entity;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +28,12 @@ public class UserServices {
     public User insert (User user){
         return userRepository.save(user);
     }
-    public void deleteByid(Integer id){
-        userRepository.deleteById(id);
+    public void delete(Integer id){
+        try {
+            userRepository.deleteById(id);
+        }catch(DataIntegrityViolationException error ){
+            throw new DataBaseException(error.getMessage());
+        }
     }
 
     public User update(Integer id, User user){
