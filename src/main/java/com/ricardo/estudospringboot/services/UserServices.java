@@ -3,6 +3,7 @@ package com.ricardo.estudospringboot.services;
 import com.ricardo.estudospringboot.repositories.UserRepository;
 import com.ricardo.estudospringboot.services.exceptions.DataBaseException;
 import com.ricardo.estudospringboot.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -37,9 +38,13 @@ public class UserServices {
     }
 
     public User update(Integer id, User user){
-        User entity = userRepository.getReferenceById(id);
-        updateData(entity,user);
-        return userRepository.save(entity);
+        try {
+            User entity = userRepository.getReferenceById(id);
+            updateData(entity, user);
+            return userRepository.save(entity);
+        }catch(EntityNotFoundException error){
+            throw new ResourceNotFoundException(id);
+        }
     }
     private void  updateData(User oldUser, User newUser){
         oldUser.setName(newUser.getName());
