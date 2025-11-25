@@ -1,8 +1,0 @@
-com/ricardo/estudospringboot/EstudoSpringbootApplication.class
-com/ricardo/estudospringboot/dto/WeatherStatistics.class
-com/ricardo/estudospringboot/repositories/WeatherDataRepository.class
-com/ricardo/estudospringboot/dto/WeatherPrediction.class
-com/ricardo/estudospringboot/services/WeatherPredictionService.class
-com/ricardo/estudospringboot/entities/WeatherData.class
-com/ricardo/estudospringboot/resources/WeatherPredictionResources.class
-com/ricardo/estudospringboot/entities/User.class
