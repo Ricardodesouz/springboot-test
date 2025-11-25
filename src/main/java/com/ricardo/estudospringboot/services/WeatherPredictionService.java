@@ -4,6 +4,7 @@ import com.ricardo.estudospringboot.dto.WeatherPrediction;
 import com.ricardo.estudospringboot.dto.WeatherStatistics;
 import com.ricardo.estudospringboot.entities.WeatherData;
 import com.ricardo.estudospringboot.repositories.WeatherDataRepository;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Service for weather prediction with efficient processing of large meteorological datasets.
@@ -30,6 +32,22 @@ public class WeatherPredictionService {
         this.weatherDataRepository = weatherDataRepository;
         // Use available processors for optimal parallel processing
         this.executorService = Executors.newWorkStealingPool();
+    }
+
+    /**
+     * Cleanup method to properly shutdown the executor service when the application stops.
+     */
+    @PreDestroy
+    public void shutdown() {
+        executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executorService.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 
     /**
@@ -223,22 +241,29 @@ public class WeatherPredictionService {
 
     // Private helper methods
 
+    /**
+     * Calculate exponential moving average with optimized data processing.
+     * Pre-filters null values in parallel before sequential EMA calculation.
+     * Note: EMA inherently requires sequential processing as each value depends on the previous.
+     */
     private <T> double calculateExponentialMovingAverage(List<T> data,
                                                          java.util.function.Function<T, Double> extractor,
                                                          double alpha) {
-        double ema = 0.0;
-        boolean first = true;
+        // Pre-filter null values using parallel stream for large datasets
+        double[] values = data.parallelStream()
+                .map(extractor)
+                .filter(v -> v != null)
+                .mapToDouble(Double::doubleValue)
+                .toArray();
 
-        for (T item : data) {
-            Double value = extractor.apply(item);
-            if (value != null) {
-                if (first) {
-                    ema = value;
-                    first = false;
-                } else {
-                    ema = alpha * value + (1 - alpha) * ema;
-                }
-            }
+        if (values.length == 0) {
+            return 0.0;
+        }
+
+        // EMA calculation is inherently sequential - each step depends on previous
+        double ema = values[0];
+        for (int i = 1; i < values.length; i++) {
+            ema = alpha * values[i] + (1 - alpha) * ema;
         }
         return ema;
     }
